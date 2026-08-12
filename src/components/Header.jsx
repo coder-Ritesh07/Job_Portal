@@ -32,7 +32,7 @@ const Header = () => {
   return (
     <div>
       <nav className="flex justify-between items-center pt-2 ">
-        <Link>
+        <Link to="/">
           <img
             src="/Joblogo.png"
             alt="joblogo"

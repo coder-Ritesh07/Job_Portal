@@ -39,6 +39,7 @@ const JobLists = () => {
     if (query) {
       setSearchQuery(query);
     }
+    e.target.reset()
   }
 
   async function getCompaniesDatas() {

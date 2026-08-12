@@ -54,7 +54,7 @@ const Header = () => {
           <SignedIn>
             {user?.unsafeMetadata?.role === "Recruiter" && (
               <>
-              {/* Desktop */}
+                {/* Desktop */}
                 <Link to="/post-jobs" className="hidden sm:block">
                   <Button
                     variant="destructive"
@@ -90,11 +90,12 @@ const Header = () => {
                   labelIcon={<BriefcaseBusiness size={15} />}
                   href="/myjobs"
                 ></UserButton.Link>
+                {user?.unsafeMetadata?.role==="Candidate"&&
                 <UserButton.Link
                   label="Saved Jobs"
                   labelIcon={<Heart size={15} />}
                   href="/saved-job"
-                ></UserButton.Link>
+                ></UserButton.Link>}
               </UserButton.MenuItems>
             </UserButton>
           </SignedIn>
@@ -107,7 +108,7 @@ const Header = () => {
         >
           <SignIn
             signUpFallbackRedirectUrl="/onboarding"
-            fallbackRedirectUrl="/onboarding"
+            fallbackRedirectUrl="/"
           />
         </div>
       )}

@@ -105,7 +105,7 @@ const JobCard = ({
               More Details
             </Button>
           </Link>
-          {!isMyjobs && (
+          {user?.unsafeMetadata?.role==="Candidate"&&!isMyjobs && (
             <Button
               variant="outline"
               className="w-15"

@@ -1,5 +1,6 @@
 import { getSavedJobs } from "@/Apis/ApiJobs";
 import JobCard from "@/components/JobCard";
+import JobCardSkeleton from "@/components/Skeleton/JobCardSkeleton";
 import { useSession, useUser } from "@clerk/clerk-react";
 import React, { useEffect, useState } from "react";
 import { BarLoader } from "react-spinners";
@@ -8,8 +9,8 @@ const SavedJobs = () => {
   const { session } = useSession();
   const { user, isLoaded } = useUser();
   const [isError, setIsError] = useState(null);
-  const [loadingSavedJobs, setLoadingSavedJobs] = useState(false);
-  const [savedJobs, setSavedJobs] = useState([]);
+  const [loadingSavedJobs, setLoadingSavedJobs] = useState(true);
+  const [savedJobs, setSavedJobs] = useState(null);
   async function fetchUserSavedJobs() {
     try {
       if (!session) return;
@@ -36,7 +37,7 @@ const SavedJobs = () => {
     }
   }, [isLoaded, session]);
 
-  if (!isLoaded||!savedJobs) {
+  if (!isLoaded ) {
     return (
       <BarLoader size={150} width="100%" color="#69D2E7 " className="mb-4" />
     );
@@ -47,29 +48,32 @@ const SavedJobs = () => {
         Saved Jobs
       </h1>
       <div className="mt-10">
-
-      {loadingSavedJobs ? (
-        <BarLoader size={150} width="100%" color="#69D2E7 " className="mb-4" />
-      ) : savedJobs === null ? null : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 items-center">
-          {savedJobs?.length ? (
-            savedJobs.map((savedJob) => {
-              return (
-                <JobCard
-                  key={savedJob.id}
-                  job={savedJob.job}
-                  savedInit={true}
-                  onJobSaved={fetchUserSavedJobs}
+        {loadingSavedJobs ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <JobCardSkeleton key={index} />
+            ))}
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 items-center">
+            {savedJobs?.length ? (
+              savedJobs.map((savedJob) => {
+                return (
+                  <JobCard
+                    key={savedJob.id}
+                    job={savedJob.job}
+                    savedInit={true}
+                    onJobSaved={fetchUserSavedJobs}
                   />
                 );
               })
             ) : (
               <p className="text-3xl text-red-500 sm:6xl font-extrabold">
-              No Jobs Available Now 😥
-            </p>
-          )}
-        </div>
-      )}
+                No Jobs Available Now 😥
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
